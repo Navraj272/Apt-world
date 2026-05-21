@@ -1,0 +1,41 @@
+export const getUsersSchema = {
+  query: {
+    type: 'object',
+    properties: {
+      user: { type: 'object' },
+      limit: { type: 'string' },
+      pageNo: { type: 'string' },
+      search: { type: ['string', 'null'] },
+      isInternal: { type: ['boolean', 'null'] },
+      isActive: { type: ['string', 'null'] },
+      affiliateStatus: { type: ['string', 'null'] },
+      groupId: { type: ['string', 'null'] },
+      userId: { type: ['string', 'null'] },
+      phoneNumber: { type: ['string', 'null'] },
+      diditStatus: { type: ['string', 'null'], enum: ['pending','requested','approved','declined','resubmission_requested', 'admin_approved', 'abandoned', 'expired','admin_block','review'] },
+      loggedIn: { type: ['string', 'null'] },
+      countryCode: { type: ['string', 'null'] },
+      refParentId: { type: ['string', 'null'] },
+      level: { type: ['string', 'null'], enum: ['1', '2', '3', '4', '5', ''] },
+      affiliateId: { type: ['string', 'null'] },
+      startDate: { type: ['string', 'null'] },
+      endDate: { type: ['string', 'null'] },
+      sort: { type: ["string", "null"]},
+      orderBy: { type: ["string", "null"] },
+      isKycVerified: { enum: ['ture', 'false']},
+      stateCode: { type: ['array', 'null']},
+      minScPurchasedCount : { type: ['string','number']},
+      maxScPurchasedCount : { type: ['string','number']},
+      minScBalance : { type: ['string','number']},
+      maxScBalance : { type: ['string','number']},
+      lastLoginStartDate: { type: ['string', 'null'] },
+      lastLoginEndDate: { type: ['string', 'null'] },
+      cxToken: { type: ['string','number'] },
+      isSelfExcluded: { type: 'string' },
+      accountStatus: { type: ['string', 'null'], enum: ['ACTIVE','INACTIVE','SUSPENDED','UNDER_REVIEW','CLOSED'] },
+      tagIds: { type: ['array', 'null'] },
+
+    },
+    // required: ['']
+  }
+}

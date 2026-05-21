@@ -1,0 +1,14 @@
+.env
+node_modules
+# scripts
+**http_ca.crt
+# scripts
+dist/*
+logs/*
+package-lock.json
+#docker
+docker-compose.yml
+coverage
+test-report.html
+.claude
+.vscode
