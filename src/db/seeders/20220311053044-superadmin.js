@@ -1,6 +1,6 @@
 'use strict'
 
-const { permissions } = require("@src/utils/constants/starfManagement.constants")
+const { permissions } = require("@src/utils/constants/public.constants")
 
 module.exports = {
   async up(queryInterface, DataTypes) {

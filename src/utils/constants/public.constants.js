@@ -20,7 +20,7 @@ export const CACHE_KEYS = {
   SETTINGS: 'cache:settings', // done
   VIP: 'cache:vip', // done
   PROMOTIONS: 'cache:promotions', // done
-  WHEEL_CONFIG: 'cache:wheel-configs' , // done,
+  WHEEL_CONFIG: 'cache:wheel-configs', // done,
   INTERNAL_USERS: 'internal_users',
   FYNTEK_REDEEM_COOLDOWN: 'cache:fyntek_redeem_cooldown',
   IP_ADDRESSES: 'cache:ip-addresses'
@@ -71,7 +71,7 @@ export const CUSTOMER_IO_CONSTANTS = {
   USER_ACTIVATED: 'user_activated',
   USER_BLOCKED: 'user_blocked',
   // Event Names
-  SELF_EXCLUSION :"self_exclusion",
+  SELF_EXCLUSION: "self_exclusion",
   SIGNIN: "signin",
   SIGNUP: "signup",
   PURCHASE: "purchase",
@@ -81,7 +81,7 @@ export const CUSTOMER_IO_CONSTANTS = {
   REDEMPTION_REQUESTED: "redemption_requested",
   REDEMPTION_SUCCESS: "redemption_success",
   REDEMPTION_FAILED: "redemption_failed",
-  REDEMPTION_STATUS_UPDATED : "redemption_status_updated",
+  REDEMPTION_STATUS_UPDATED: "redemption_status_updated",
   PROMOCODE_USED: "promocode_used",
   WELCOME_BONUS_CLAIMED: "welcome_bonus_claimed",
   PROMOCODE_USED: "promocode_used",
@@ -232,7 +232,7 @@ export const TRANSACTION_PURPOSE = {
 
 
 export const DEBIT_TRANSACTION_PURPOSE_CIO = {
-  MANUAL_DEBIT: "manual_debit",   
+  MANUAL_DEBIT: "manual_debit",
   SC_EXPIRY: "sc_expiry",
   ACCOUNT_CLOSURE: "account_closure",
   CONFISCATION: "confiscation"
@@ -385,3 +385,175 @@ export const TIN_MATCH_STATUS = {
   FAILED: 'Failed',
   NOT_SUBMITTED: 'Not_submitted'
 }
+
+
+
+export const ROLE_DETAILS = {
+  SUPERADMIN: {
+    NAME: 'Super Admin',
+    LEVEL: 1
+  },
+  ADMIN: {
+    NAME: 'Admin',
+    LEVEL: 2
+  },
+  MANAGER: {
+    NAME: 'Manager',
+    LEVEL: 3
+  },
+  SUPPORT: {
+    NAME: 'Support',
+    LEVEL: 4
+  }
+}
+
+export const applicationModules = {
+  profile: 'Profile',
+  administrator: 'Administrator',
+  players: 'Players',
+  playerEngagement: 'PlayerEngagement',
+  amoe: 'AMOE',
+  appConfiguration: 'AppConfiguration',
+  contentManagement: 'ContentManagement',
+  crmManagement: 'ContentManagement',
+  casinoManagement: 'CasinoManagement',
+  bonus: 'Bonus',
+  reports: 'Reports',
+  packages: 'Packages',
+  countriesStates: 'CountriesStates',
+  chatModule: 'ChatModule',
+  affiliateModule: 'AffiliateModule',
+  fraudDetection: 'FraudDetection',
+  paymentGateway: 'PaymentGateway',
+  dashboard: 'Dashboard',
+};
+
+export const permissionLevels = {
+  create: 'C',
+  read: 'R',
+  update: 'U',
+  delete: 'D',
+  toggle: 'T',
+  assign: 'A',
+  upload: 'UPL',
+  reOrder: 'RO'
+};
+
+/**
+ * @typedef {keyof typeof applicationModules} ModuleKey
+ * @typedef {keyof typeof permissionLevels} PermissionKey
+ */
+
+/**
+ * Generates a structured object that maps modules to their permission codes.
+ * @type {Record<ModuleKey, Record<PermissionKey, string>>}
+ */
+export const applicationModule = Object.entries(applicationModules).reduce((acc, [moduleKey, moduleName]) => {
+  acc[moduleKey] = Object.entries(permissionLevels).reduce((permAcc, [permKey, permCode]) => {
+    permAcc[permKey] = `${moduleName}:${permCode}`;
+    return permAcc;
+  }, {});
+  return acc;
+}, {});
+
+
+/**
+ * Defines available permissions for each module.
+ * @type {Record<string, string[]>}
+ */
+export const permissions = {
+  [applicationModules.administrator]: [
+    permissionLevels.create,
+    permissionLevels.read,
+    permissionLevels.update,
+    permissionLevels.toggle,
+    permissionLevels.assign
+  ],
+  [applicationModules.players]: [
+    permissionLevels.read,
+    permissionLevels.update,
+    permissionLevels.toggle
+  ],
+  [applicationModules.playerEngagement]: [
+    permissionLevels.read,
+    permissionLevels.create,
+    permissionLevels.update,
+    permissionLevels.delete,
+    permissionLevels.toggle
+  ],
+  [applicationModules.amoe]: [
+    permissionLevels.read,
+    permissionLevels.update
+  ],
+  [applicationModules.appConfiguration]: [
+    permissionLevels.read,
+    permissionLevels.create,
+    permissionLevels.update,
+    permissionLevels.upload,
+    permissionLevels.reOrder,
+  ],
+  [applicationModules.contentManagement]: [
+    permissionLevels.create,
+    permissionLevels.read,
+    permissionLevels.update,
+    permissionLevels.delete, // Fixed Typo
+    permissionLevels.toggle
+  ],
+  [applicationModules.crmManagement]: [
+    permissionLevels.create,
+    permissionLevels.read,
+    permissionLevels.update,
+    permissionLevels.delete, // Fixed Typo
+    permissionLevels.toggle
+  ],
+  [applicationModules.casinoManagement]: [
+    permissionLevels.read,
+    permissionLevels.create,
+    permissionLevels.delete,
+    permissionLevels.update,
+    permissionLevels.toggle
+  ],
+  [applicationModules.bonus]: [
+    permissionLevels.read,
+    permissionLevels.create,
+    permissionLevels.update,
+    permissionLevels.toggle
+  ],
+  [applicationModules.reports]: [
+    permissionLevels.read
+  ],
+  [applicationModules.packages]: [
+    permissionLevels.read,
+    permissionLevels.create,
+    permissionLevels.delete,
+    permissionLevels.update,
+    permissionLevels.toggle
+  ],
+  [applicationModules.countriesStates]: [
+    permissionLevels.read,
+    permissionLevels.toggle
+  ],
+  [applicationModules.chatModule]: [
+    permissionLevels.read,
+    permissionLevels.create,
+    permissionLevels.delete,
+    permissionLevels.update,
+    permissionLevels.toggle,
+    permissionLevels.reOrder,
+  ],
+  [applicationModules.affiliateModule]: [
+    permissionLevels.update,
+    permissionLevels.toggle
+  ],
+  [applicationModules.fraudDetection]: [],
+  [applicationModules.paymentGateway]: [
+    permissionLevels.toggle
+  ],
+  [applicationModules.dashboard]: [
+    permissionLevels.create,
+    permissionLevels.read,
+    permissionLevels.update,
+    permissionLevels.toggle,
+    permissionLevels.assign
+  ],
+};
