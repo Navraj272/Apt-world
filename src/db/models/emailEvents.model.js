@@ -50,13 +50,13 @@ module.exports = (sequelize, DataTypes) => {
 
 
   EmailEvent.associate = models => {
-    EmailEvent.belongsTo(models.Campaign, {
-      foreignKey: 'campaignId',
-    })
-    EmailEvent.belongsTo(models.User, {
-      foreignKey: "userId",
-      constraints: false,
-    });
+    // EmailEvent.belongsTo(models.Campaign, {
+    //   foreignKey: 'campaignId',
+    // })
+    // EmailEvent.belongsTo(models.User, {
+    //   foreignKey: "userId",
+    //   constraints: false,
+    // });
   }
 
   return EmailEvent

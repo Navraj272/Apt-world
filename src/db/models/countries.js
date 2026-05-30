@@ -44,10 +44,10 @@ module.exports = (sequelize, DataTypes) => {
   })
 
   Country.associate = function (models) {
-    Country.belongsTo(models.Language, {
-      foreignKey: 'languageId',
-      as: 'language'
-    })
+    // Country.belongsTo(models.Language, {
+    //   foreignKey: 'languageId',
+    //   as: 'language'
+    // })
   }
 
   return Country

@@ -1,6 +1,6 @@
 'use strict';
 
-import { CRM_ACTION_LOGS } from "@src/utils/constants/crm.constants";
+// import { CRM_ACTION_LOGS } from "@src/utils/constants/public.constants"; 
 
 module.exports = function (sequelize, DataTypes) {
   const ActionLog = sequelize.define('ActionLog', {
@@ -28,11 +28,11 @@ module.exports = function (sequelize, DataTypes) {
       },
       onDelete: 'CASCADE'
     },
-    actionType: {
-      type: DataTypes.ENUM(Object.values(CRM_ACTION_LOGS)),
-      allowNull: false,
-      defaultValue: CRM_ACTION_LOGS.EMAIL
-    },
+    // actionType: {
+    //   type: DataTypes.ENUM(Object.values(CRM_ACTION_LOGS)),
+    //   allowNull: false,
+    //   defaultValue: CRM_ACTION_LOGS.EMAIL
+    // },
     status: {
       type: DataTypes.STRING,
       allowNull: true
@@ -54,13 +54,13 @@ module.exports = function (sequelize, DataTypes) {
   });
 
   ActionLog.associate = function (models) {
-    ActionLog.belongsTo(models.User, {
-      foreignKey: 'userId'
-    });
+    // ActionLog.belongsTo(models.User, {
+    //   foreignKey: 'userId'
+    // });
 
-    ActionLog.belongsTo(models.Flow, {
-      foreignKey: 'flowId'
-    });
+    // ActionLog.belongsTo(models.Flow, {
+    //   foreignKey: 'flowId'
+    // });
   };
 
 

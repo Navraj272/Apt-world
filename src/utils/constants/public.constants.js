@@ -557,3 +557,9 @@ export const permissions = {
     permissionLevels.assign
   ],
 };
+
+export const CRM_ACTION_LOGS = {
+  POPUP: "popup",
+  EMAIL: "email",
+  ALERT: "alert"
+}

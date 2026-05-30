@@ -5,7 +5,7 @@ import { Errors } from '@src/errors/errorCodes'
 import { encryptPassword } from '@src/helpers/authentication.helpers'
 import { BaseHandler } from '@src/libs/baseHandler'
 import { deleteCache } from '@src/libs/redis'
-import { ROLE_DETAILS } from '@src/utils/constants/starfManagement.constants'
+import { ROLE_DETAILS } from '@src/utils/constants/public.constants'
 import Jwt from 'jsonwebtoken'
 
 export class VerifyForgetPasswordHandler extends BaseHandler {

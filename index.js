@@ -3,7 +3,7 @@ import config from './src/configs/app.config'
 import gracefulShutDown from './src/libs/gracefulShutDown'
 import { Logger } from './src/libs/logger'
 import app from './src/rest-resources'
-import socketServer from './src/socket-resources'
+import socketServer from '@src/socket-resources'
 
 const httpServer = createServer(app)
 socketServer.attach(httpServer)

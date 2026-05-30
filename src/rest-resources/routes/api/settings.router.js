@@ -6,7 +6,7 @@ import { contextMiddleware } from "@src/rest-resources/middlewares/context.middl
 import { isAdminAuthenticated } from "@src/rest-resources/middlewares/isAdminAuthenticated";
 import { uploadDesktopAndMobileImage } from "@src/rest-resources/middlewares/multer";
 import { requestValidationMiddleware } from "@src/rest-resources/middlewares/requestValidation.middleware";
-import { applicationModule } from "@src/utils/constants/starfManagement.constants";
+import { applicationModule } from "@src/utils/constants/public.constants"; 
 import express from "express";
 
 // JSON Schemas
