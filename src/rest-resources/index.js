@@ -16,11 +16,15 @@ app.use(morgan('tiny'))
 
 // Parsing request bodies
 app.use(express.json({
+  limit: '50mb',
   verify: (req, res, buf) => {
     req.rawBody = buf.toString()
   }
 })); // Built-in JSON body parser
-app.use(express.urlencoded({ extended: true })) // Built-in URL-encoded parser
+app.use(express.urlencoded({ limit: '50mb', extended: true })) // Built-in URL-encoded parser
+
+// Static files
+app.use('/uploads', express.static('public/uploads'))
 
 app.use(
   cors({

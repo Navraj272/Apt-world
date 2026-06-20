@@ -63,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    mobileThumbnail: {
+    mobile_thumbnail: {
       type: DataTypes.STRING,
       allowNull: true
     },
