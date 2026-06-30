@@ -18,6 +18,7 @@ export class GetAllEnquiriesHandler extends BaseHandler {
       order: [['id', 'DESC']],
       include: [
         { model: db.Product, as: 'product', attributes: ['id', 'name', 'slug', 'baseCode'] },
+        { model: db.FranchiseLocation, as: 'franchiseLocation', attributes: ['id', 'state', 'city', 'email', 'phone'] },
       ],
     });
 

@@ -63,10 +63,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
-    mobile_thumbnail: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
+    // mobile_thumbnail: {
+    //   type: DataTypes.STRING,
+    //   allowNull: true
+    // },
   }, {
     sequelize,
     tableName: 'products',

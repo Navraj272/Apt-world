@@ -1,4 +1,4 @@
-export const enquiryEmailHtml = (enquiry) => {
+export const enquiryEmailHtml = (enquiry, attachmentCount = 0) => {
   let extraRows = '';
 
   if (enquiry.type === 'product' && enquiry.product) {
@@ -11,6 +11,23 @@ export const enquiryEmailHtml = (enquiry) => {
       <tr>
         <td style="padding:10px 20px;border-bottom:1px solid #e5e7eb;font-size:13px;color:#6b7280;white-space:nowrap;">SKU</td>
         <td style="padding:10px 20px;border-bottom:1px solid #e5e7eb;font-size:13px;color:#111827;font-weight:600;">${enquiry.product.baseCode || 'N/A'}</td>
+      </tr>`;
+  }
+
+  if (enquiry.type === 'franchise_product' && enquiry.franchiseLocation) {
+    const fl = enquiry.franchiseLocation;
+    extraRows = `
+      <tr>
+        <td style="padding:10px 20px;border-bottom:1px solid #e5e7eb;font-size:13px;color:#6b7280;white-space:nowrap;">Franchise</td>
+        <td style="padding:10px 20px;border-bottom:1px solid #e5e7eb;font-size:13px;color:#111827;font-weight:600;">${fl.city}, ${fl.state}</td>
+      </tr>
+      <tr>
+        <td style="padding:10px 20px;border-bottom:1px solid #e5e7eb;font-size:13px;color:#6b7280;white-space:nowrap;">Franchise Address</td>
+        <td style="padding:10px 20px;border-bottom:1px solid #e5e7eb;font-size:13px;color:#111827;font-weight:600;">${fl.address}</td>
+      </tr>
+      <tr>
+        <td style="padding:10px 20px;border-bottom:1px solid #e5e7eb;font-size:13px;color:#6b7280;white-space:nowrap;">Franchise Contact</td>
+        <td style="padding:10px 20px;border-bottom:1px solid #e5e7eb;font-size:13px;color:#111827;font-weight:600;">${fl.contactName || 'N/A'} &middot; ${fl.phone} &middot; <a href="mailto:${fl.email}" style="color:#E11922;text-decoration:none;">${fl.email}</a></td>
       </tr>`;
   }
 
@@ -89,6 +106,10 @@ export const enquiryEmailHtml = (enquiry) => {
           <p style="margin:0 0 8px;font-size:10px;color:#9ca3af;text-transform:uppercase;letter-spacing:1.5px;font-weight:700;">Message</p>
           <p style="margin:0;font-size:13px;color:#1f2937;line-height:1.7;">${enquiry.message}</p>
         </div>
+        ${attachmentCount > 0 ? `
+        <div style="margin-top:16px;padding:14px 20px;background:#fef2f2;border-radius:4px;">
+          <p style="margin:0;font-size:12px;color:#991b1b;font-weight:600;">&#128206; ${attachmentCount} photo${attachmentCount !== 1 ? 's' : ''} attached to this email.</p>
+        </div>` : ''}
       </td>
     </tr>
     <tr>

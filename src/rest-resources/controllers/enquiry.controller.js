@@ -8,7 +8,8 @@ import { ApiHelper } from '@src/utils/api.utils';
 export default class EnquiryController {
   static async create(req, res, next) {
     try {
-      const data = await CreateEnquiryHandler.execute(req.body, req.context);
+      const args = { ...req.body, files: req.files };
+      const data = await CreateEnquiryHandler.execute(args, req.context);
       ApiHelper.sendResponse({ req, res, next }, data);
     } catch (error) {
       next(error);

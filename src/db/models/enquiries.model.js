@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     type: {
-      type: DataTypes.ENUM('general', 'distributor', 'product', 'rental'),
+      type: DataTypes.ENUM('general', 'distributor', 'product', 'rental', 'franchise_product'),
       allowNull: false,
       defaultValue: 'general',
     },
@@ -34,6 +34,14 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       references: {
         model: 'products',
+        key: 'id',
+      },
+    },
+    franchiseLocationId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'franchise_locations',
         key: 'id',
       },
     },
@@ -62,6 +70,10 @@ module.exports = (sequelize, DataTypes) => {
     Enquiry.belongsTo(models.Product, {
       foreignKey: 'productId',
       as: 'product',
+    });
+    Enquiry.belongsTo(models.FranchiseLocation, {
+      foreignKey: 'franchiseLocationId',
+      as: 'franchiseLocation',
     });
   };
 

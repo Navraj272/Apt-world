@@ -27,3 +27,7 @@ export const uploadProductImages = upload.fields([
   { name: 'thumbnail', maxCount: 1 },
   { name: 'images', maxCount: 10 },
 ]);
+
+export const uploadEnquiryImages = upload.fields([
+  { name: 'images', maxCount: 5 },
+]);

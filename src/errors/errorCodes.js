@@ -1838,4 +1838,18 @@ INVALID_REQUEST_BODY: {
     code: 5007,
     httpStatusCode: 404,
   },
+  FRANCHISE_LOCATION_NOT_FOUND: {
+    name: "FranchiseLocationNotFound",
+    message: "Franchise location not found",
+    explanation: "The requested franchise location could not be found in the database.",
+    code: 5008,
+    httpStatusCode: 404,
+  },
+  INVALID_STATE: {
+    name: "InvalidState",
+    message: "Invalid state",
+    explanation: "The provided state is not a recognized Indian state or union territory.",
+    code: 5009,
+    httpStatusCode: 400,
+  },
 };

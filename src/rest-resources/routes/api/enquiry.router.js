@@ -1,5 +1,6 @@
 import EnquiryController from '@src/rest-resources/controllers/enquiry.controller';
 import { contextMiddleware } from '@src/rest-resources/middlewares/context.middleware';
+import { uploadEnquiryImages } from '@src/rest-resources/middlewares/multer';
 import express from 'express';
 
 const enquiryRouter = express.Router();
@@ -7,7 +8,7 @@ const enquiryRouter = express.Router();
 enquiryRouter
   .route('/')
   .get(contextMiddleware(false), EnquiryController.getAll)
-  .post(contextMiddleware(true), EnquiryController.create);
+  .post(contextMiddleware(true), uploadEnquiryImages, EnquiryController.create);
 
 enquiryRouter
   .route('/:id')

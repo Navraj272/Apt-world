@@ -1,3 +1,4 @@
+import fs from 'fs';
 import db from '@src/db/models';
 import { AppError } from '@src/errors/app.error';
 import { Errors } from '@src/errors/errorCodes';
@@ -6,15 +7,17 @@ import { sendEnquiryNotification } from '@src/helpers/notification.helpers';
 
 export class CreateEnquiryHandler extends BaseHandler {
   async run() {
-    const { 
-      name, 
-      email, 
-      phone, 
-      type, 
-      distributorTier, 
-      productId, 
-      quantity, 
-      message 
+    const {
+      name,
+      email,
+      phone,
+      type,
+      distributorTier,
+      productId,
+      franchiseLocationId,
+      quantity,
+      message,
+      files,
     } = this.args;
 
     if (!name || !email || !message || !type) {
@@ -28,9 +31,21 @@ export class CreateEnquiryHandler extends BaseHandler {
       });
     }
 
+    if (type === 'franchise_product' && !franchiseLocationId) {
+      throw new AppError({
+        ...Errors.MISSING_REQUIRED_PARAMETER,
+        message: 'Franchise location is required for franchise product enquiries.',
+      });
+    }
+
     if (productId) {
       const product = await db.Product.findByPk(productId);
       if (!product) throw new AppError(Errors.PRODUCT_NOT_FOUND);
+    }
+
+    if (franchiseLocationId) {
+      const franchiseLocation = await db.FranchiseLocation.findByPk(franchiseLocationId);
+      if (!franchiseLocation) throw new AppError(Errors.FRANCHISE_LOCATION_NOT_FOUND);
     }
 
     const enquiry = await db.Enquiry.create({
@@ -40,6 +55,7 @@ export class CreateEnquiryHandler extends BaseHandler {
       type,
       distributorTier,
       productId,
+      franchiseLocationId,
       quantity,
       message,
       status: 'pending',
@@ -48,12 +64,23 @@ export class CreateEnquiryHandler extends BaseHandler {
     const fullEnquiry = await db.Enquiry.findByPk(enquiry.id, {
       include: [
         { model: db.Product, as: 'product', attributes: ['id', 'name', 'baseCode'] },
+        { model: db.FranchiseLocation, as: 'franchiseLocation' },
       ],
     });
 
-    sendEnquiryNotification(fullEnquiry).catch((err) => {
-      console.error('Notification email failed:', err.message);
-    });
+    const imageFiles = (files && files.images) || [];
+
+    sendEnquiryNotification(fullEnquiry, imageFiles)
+      .catch((err) => {
+        console.error('Notification email failed:', err.message);
+      })
+      .finally(() => {
+        imageFiles.forEach((file) => {
+          fs.unlink(file.path, (err) => {
+            if (err) console.error('Failed to clean up enquiry image temp file:', err.message);
+          });
+        });
+      });
 
     return enquiry;
   }
