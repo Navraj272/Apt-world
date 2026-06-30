@@ -326,6 +326,29 @@ const config = convict({
     }
   },
 
+  smtp: {
+    host: {
+      default: 'smtp.gmail.com',
+      env: 'SMTP_HOST'
+    },
+    port: {
+      default: 587,
+      env: 'SMTP_PORT'
+    },
+    user: {
+      default: '',
+      env: 'SMTP_USER'
+    },
+    pass: {
+      default: '',
+      env: 'SMTP_PASS'
+    },
+    notificationEmail: {
+      default: 'info.aptworld@gmail.com',
+      env: 'NOTIFICATION_EMAIL'
+    }
+  },
+
   sendGrid: {
     apiKey: {
       default: '',
@@ -346,6 +369,29 @@ const config = convict({
     helpCentreUrl: {
       default: '',
       env: 'HELP_CENTER_URL'
+    }
+  },
+
+  cloudinary: {
+    cloudName: {
+      doc: 'Cloudinary cloud name',
+      default: '',
+      env: 'CLOUDINARY_CLOUD_NAME'
+    },
+    apiKey: {
+      doc: 'Cloudinary API key',
+      default: '',
+      env: 'CLOUDINARY_API_KEY'
+    },
+    apiSecret: {
+      doc: 'Cloudinary API secret',
+      default: '',
+      env: 'CLOUDINARY_API_SECRET'
+    },
+    uploadFolder: {
+      doc: 'Cloudinary upload folder prefix',
+      default: 'apt-world',
+      env: 'CLOUDINARY_UPLOAD_FOLDER'
     }
   },
 

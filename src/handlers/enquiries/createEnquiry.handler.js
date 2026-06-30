@@ -2,6 +2,7 @@ import db from '@src/db/models';
 import { AppError } from '@src/errors/app.error';
 import { Errors } from '@src/errors/errorCodes';
 import { BaseHandler } from '@src/libs/baseHandler';
+import { sendEnquiryNotification } from '@src/helpers/notification.helpers';
 
 export class CreateEnquiryHandler extends BaseHandler {
   async run() {
@@ -42,6 +43,16 @@ export class CreateEnquiryHandler extends BaseHandler {
       quantity,
       message,
       status: 'pending',
+    });
+
+    const fullEnquiry = await db.Enquiry.findByPk(enquiry.id, {
+      include: [
+        { model: db.Product, as: 'product', attributes: ['id', 'name', 'baseCode'] },
+      ],
+    });
+
+    sendEnquiryNotification(fullEnquiry).catch((err) => {
+      console.error('Notification email failed:', err.message);
     });
 
     return enquiry;

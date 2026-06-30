@@ -9,21 +9,21 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
     cb(null, `${uuidv4()}${ext}`);
-  }
+  },
 });
 
-const upload = multer({ 
+const upload = multer({
   storage,
   limits: {
-    fileSize: 50 * 1024 * 1024 // 50MB
-  }
+    fileSize: 50 * 1024 * 1024,
+  },
 });
 
 export const uploadSingle = (fieldName) => upload.single(fieldName);
 export const uploadMultiple = (fieldName, maxCount = 5) => upload.array(fieldName, maxCount);
-export const uploadDesktopAndMobileImage = upload.fields([{ name: "desktop" }, { name: "mobile" }]);
+export const uploadDesktopAndMobileImage = upload.fields([{ name: 'desktop' }, { name: 'mobile' }]);
 
 export const uploadProductImages = upload.fields([
   { name: 'thumbnail', maxCount: 1 },
-  { name: 'images', maxCount: 10 }
+  { name: 'images', maxCount: 10 },
 ]);

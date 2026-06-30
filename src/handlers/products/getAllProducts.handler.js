@@ -5,7 +5,7 @@ import { ApiHelper } from '@src/utils/api.utils';
 export class GetAllProductsHandler extends BaseHandler {
   async run() {
     const { offset, limit, pageNo } = ApiHelper.getPagination(this.args.pageNo, this.args.limit);
-    const { categoryId, subcategoryId, isActive, search } = this.args;
+    const { categoryId, subcategoryId, isActive, search, order: sortOrder } = this.args;
 
     const where = {};
     if (categoryId) where.categoryId = categoryId;
@@ -13,17 +13,29 @@ export class GetAllProductsHandler extends BaseHandler {
     if (isActive !== undefined) {
       where.isActive = isActive === 'true' || isActive === true;
     }
-    
-    // Simple search on baseCode if provided
+
     if (search) {
-      where.baseCode = { [db.Sequelize.Op.iLike]: `%${search}%` };
+      where[db.Sequelize.Op.or] = [
+        { baseCode: { [db.Sequelize.Op.iLike]: `%${search}%` } },
+          db.Sequelize.where(
+            db.Sequelize.fn('LOWER', db.Sequelize.fn('CONCAT', db.Sequelize.col('Product.name'))),
+            { [db.Sequelize.Op.like]: `%${search.toLowerCase()}%` }
+          ),
+      ];
     }
+
+    let order = [['id', 'DESC']];
+    // if (sortOrder === 'price_asc') {
+    //   order = [['price', 'ASC']];
+    // } else if (sortOrder === 'price_desc') {
+    //   order = [['price', 'DESC']];
+    // }
 
     const products = await db.Product.findAndCountAll({
       where,
       limit,
       offset,
-      order: [['id', 'DESC']],
+      order,
       include: [
         { model: db.Category, as: 'category', attributes: ['id', 'name', 'slug'] },
         { model: db.Subcategory, as: 'subcategory', attributes: ['id', 'name', 'slug'] },

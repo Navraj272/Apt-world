@@ -4,6 +4,7 @@ import { Errors } from '@src/errors/errorCodes';
 import { BaseHandler } from '@src/libs/baseHandler';
 import { StringUtils } from '@src/utils/string.utils';
 import { processImages } from '@src/utils/image.utils';
+import { uploadProductImages, uploadLocalImageToCloudinary } from '@src/utils/cloudinary.utils';
 
 export class CreateProductHandler extends BaseHandler {
   async run() {
@@ -22,12 +23,17 @@ export class CreateProductHandler extends BaseHandler {
       files
     } = this.args;
 
-    // Handle Multer files if present
+    // Upload to Cloudinary if configured, otherwise keep local paths
     if (files) {
-      if (files.thumbnail && files.thumbnail[0]) {
+      const cloudinaryResult = await uploadProductImages(files);
+      if (cloudinaryResult.thumbnail) thumbnail = cloudinaryResult.thumbnail;
+      if (cloudinaryResult.images.length > 0) images = cloudinaryResult.images;
+
+      // Fallback to local paths if Cloudinary not used
+      if (!cloudinaryResult.thumbnail && files.thumbnail && files.thumbnail[0]) {
         thumbnail = `/uploads/${files.thumbnail[0].filename}`;
       }
-      if (files.images && files.images.length > 0) {
+      if (cloudinaryResult.images.length === 0 && files.images && files.images.length > 0) {
         images = files.images.map(f => `/uploads/${f.filename}`);
       }
     }
@@ -36,6 +42,17 @@ export class CreateProductHandler extends BaseHandler {
     if (images) images = processImages(images);
     if (thumbnail) thumbnail = processImages(thumbnail);
     if (mobileThumbnail) mobileThumbnail = processImages(mobileThumbnail);
+
+    // Upload locally-saved images (from base64) to Cloudinary if configured
+    if (images && Array.isArray(images)) {
+      images = await Promise.all(images.map(uploadLocalImageToCloudinary));
+    }
+    if (thumbnail && typeof thumbnail === 'string') {
+      thumbnail = await uploadLocalImageToCloudinary(thumbnail);
+    }
+    if (mobileThumbnail && typeof mobileThumbnail === 'string') {
+      mobileThumbnail = await uploadLocalImageToCloudinary(mobileThumbnail);
+    }
 
     // If sent via FormData, these might be strings
     if (typeof name === 'string') {

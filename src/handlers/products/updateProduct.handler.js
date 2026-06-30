@@ -2,8 +2,8 @@ import db from '@src/db/models';
 import { AppError } from '@src/errors/app.error';
 import { Errors } from '@src/errors/errorCodes';
 import { BaseHandler } from '@src/libs/baseHandler';
-import { StringUtils } from '@src/utils/string.utils';
 import { processImages } from '@src/utils/image.utils';
+import { uploadProductImages, uploadLocalImageToCloudinary } from '@src/utils/cloudinary.utils';
 import { Op } from 'sequelize';
 
 export class UpdateProductHandler extends BaseHandler {
@@ -31,12 +31,16 @@ export class UpdateProductHandler extends BaseHandler {
 
     const updateData = {};
 
-    // Handle Multer files
+    // Handle Multer files — upload to Cloudinary if configured
     if (files) {
-      if (files.thumbnail && files.thumbnail[0]) {
+      const cloudinaryResult = await uploadProductImages(files);
+      if (cloudinaryResult.thumbnail) updateData.thumbnail = cloudinaryResult.thumbnail;
+      if (cloudinaryResult.images.length > 0) updateData.images = cloudinaryResult.images;
+
+      if (!cloudinaryResult.thumbnail && files.thumbnail && files.thumbnail[0]) {
         updateData.thumbnail = `/uploads/${files.thumbnail[0].filename}`;
       }
-      if (files.images && files.images.length > 0) {
+      if (cloudinaryResult.images.length === 0 && files.images && files.images.length > 0) {
         updateData.images = files.images.map(f => `/uploads/${f.filename}`);
       }
     }
@@ -64,11 +68,25 @@ export class UpdateProductHandler extends BaseHandler {
 
     if (name) updateData.name = name;
     if (description) updateData.description = typeof description === 'string' ? { en: description } : description;
-    
-    // Base64 processing (if files not provided or as addition)
-    if (images && !updateData.images) updateData.images = processImages(images);
-    if (thumbnail && !updateData.thumbnail) updateData.thumbnail = processImages(thumbnail);
-    if (mobileThumbnail) updateData.mobileThumbnail = processImages(mobileThumbnail);
+
+    if (images && !updateData.images) {
+      updateData.images = processImages(images);
+      if (Array.isArray(updateData.images)) {
+        updateData.images = await Promise.all(updateData.images.map(uploadLocalImageToCloudinary));
+      }
+    }
+    if (thumbnail && !updateData.thumbnail) {
+      updateData.thumbnail = processImages(thumbnail);
+      if (typeof updateData.thumbnail === 'string') {
+        updateData.thumbnail = await uploadLocalImageToCloudinary(updateData.thumbnail);
+      }
+    }
+    if (mobileThumbnail) {
+      updateData.mobileThumbnail = processImages(mobileThumbnail);
+      if (typeof updateData.mobileThumbnail === 'string') {
+        updateData.mobileThumbnail = await uploadLocalImageToCloudinary(updateData.mobileThumbnail);
+      }
+    }
 
     if (specs) updateData.specs = specs;
     if (isActive !== undefined) updateData.isActive = isActive === 'false' || isActive === false ? false : true;

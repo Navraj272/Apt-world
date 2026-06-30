@@ -5,12 +5,24 @@ import { ApiHelper } from '@src/utils/api.utils';
 export class GetAllSubcategoriesHandler extends BaseHandler {
   async run() {
     const { offset, limit, pageNo } = ApiHelper.getPagination(this.args.pageNo, this.args.limit);
-    const { categoryId, isActive } = this.args;
+    const { categoryId, isActive, search } = this.args;
 
     const where = {};
     if (categoryId) where.categoryId = categoryId;
     if (isActive !== undefined) {
       where.isActive = isActive === 'true' || isActive === true;
+    }
+    if (search) {
+      where[db.Sequelize.Op.or] = [
+        db.Sequelize.where(
+          db.Sequelize.fn('LOWER', db.Sequelize.fn('CONCAT', db.Sequelize.col('Subcategory.name'))),
+          { [db.Sequelize.Op.like]: `%${search.toLowerCase()}%` }
+        ),
+        db.Sequelize.where(
+          db.Sequelize.fn('LOWER', db.Sequelize.fn('CONCAT', db.Sequelize.col('Subcategory.description'))),
+          { [db.Sequelize.Op.like]: `%${search.toLowerCase()}%` }
+        ),
+      ];
     }
 
     const subcategories = await db.Subcategory.findAndCountAll({
