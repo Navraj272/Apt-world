@@ -9,7 +9,7 @@ export class GetAllFranchiseLocationsHandler extends BaseHandler {
 
     const where = {};
     if (state) where.state = state;
-    if (city) where.city = { [db.Sequelize.Op.iLike]: city };
+    if (city) where.city = { [db.Sequelize.Op.iLike]: `%${city}%` };
     if (isActive !== undefined) {
       where.isActive = isActive === 'true' || isActive === true;
     }

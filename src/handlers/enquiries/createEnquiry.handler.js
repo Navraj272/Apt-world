@@ -31,13 +31,6 @@ export class CreateEnquiryHandler extends BaseHandler {
       });
     }
 
-    if (type === 'franchise_product' && !franchiseLocationId) {
-      throw new AppError({
-        ...Errors.MISSING_REQUIRED_PARAMETER,
-        message: 'Franchise location is required for franchise product enquiries.',
-      });
-    }
-
     if (productId) {
       const product = await db.Product.findByPk(productId);
       if (!product) throw new AppError(Errors.PRODUCT_NOT_FOUND);
