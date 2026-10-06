@@ -30,7 +30,7 @@ EXPOSE $PORT 9229 9230
 # install dependencies first, in a different location for easier app bind mounting for local development
 
 COPY ./package*.json ./
-RUN npm install
+RUN npm install --include=dev
 
 # copy in our source code last, as it changes the most
 COPY . .
