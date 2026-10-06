@@ -9,6 +9,8 @@ subcategoryRouter
   .get(contextMiddleware(false), SubcategoryController.getAll)
   .post(contextMiddleware(true), SubcategoryController.create);
 
+subcategoryRouter.post('/bulk', contextMiddleware(true), SubcategoryController.bulkCreate);
+
 subcategoryRouter
   .route('/:id')
   .get(contextMiddleware(false), SubcategoryController.getOne)

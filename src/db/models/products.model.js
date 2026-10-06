@@ -59,6 +59,11 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: true,
     },
+    isFavourite: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
     thumbnail: {
       type: DataTypes.STRING,
       allowNull: true,

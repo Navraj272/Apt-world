@@ -1,3 +1,4 @@
+import { BulkCreateProductsHandler } from '@src/handlers/products/bulkCreateProducts.handler';
 import { CreateProductHandler } from '@src/handlers/products/createProduct.handler';
 import { DeleteProductHandler } from '@src/handlers/products/deleteProduct.handler';
 import { GetProductHandler } from '@src/handlers/products/getProduct.handler';
@@ -11,6 +12,15 @@ export default class ProductController {
       // Merge body and files into the handler args
       const args = { ...req.body, files: req.files };
       const data = await CreateProductHandler.execute(args, req.context);
+      ApiHelper.sendResponse({ req, res, next }, data);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async bulkCreate(req, res, next) {
+    try {
+      const data = await BulkCreateProductsHandler.execute(req.body, req.context);
       ApiHelper.sendResponse({ req, res, next }, data);
     } catch (error) {
       next(error);

@@ -10,6 +10,8 @@ productRouter
   .get(contextMiddleware(false), ProductController.getAll)
   .post(contextMiddleware(true), uploadProductImages, ProductController.create);
 
+productRouter.post('/bulk', contextMiddleware(true), ProductController.bulkCreate);
+
 productRouter
   .route('/:id')
   .get(contextMiddleware(false), ProductController.getOne)

@@ -9,7 +9,7 @@ import { errorHandlerMiddleware } from './middlewares/errorHandler.middleware'
 const app = express()
 
 // Security headers
-app.use(helmet())
+app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }))
 
 // Logging
 app.use(morgan('tiny'))

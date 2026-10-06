@@ -16,6 +16,7 @@ export class CreateProductHandler extends BaseHandler {
       baseCode,
       specs,
       isActive,
+      isFavourite,
       slug,
       images,
       thumbnail,
@@ -111,6 +112,7 @@ export class CreateProductHandler extends BaseHandler {
       baseCode,
       specs: specs || {},
       isActive: isActive === 'false' || isActive === false ? false : true,
+      isFavourite: isFavourite === 'true' || isFavourite === true,
       thumbnail,
       mobileThumbnail,
     });

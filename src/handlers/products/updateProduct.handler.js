@@ -18,6 +18,7 @@ export class UpdateProductHandler extends BaseHandler {
       baseCode,
       specs,
       isActive,
+      isFavourite,
       thumbnail,
       mobileThumbnail,
       slug,
@@ -90,6 +91,8 @@ export class UpdateProductHandler extends BaseHandler {
 
     if (specs) updateData.specs = specs;
     if (isActive !== undefined) updateData.isActive = isActive === 'false' || isActive === false ? false : true;
+
+    if (isFavourite !== undefined) updateData.isFavourite = isFavourite === 'true' || isFavourite === true;
 
     if (baseCode && baseCode !== product.baseCode) {
       const existing = await db.Product.findOne({ where: { baseCode, id: { [Op.ne]: id } } });

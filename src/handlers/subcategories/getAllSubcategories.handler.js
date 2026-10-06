@@ -1,11 +1,12 @@
 import db from '@src/db/models';
 import { BaseHandler } from '@src/libs/baseHandler';
 import { ApiHelper } from '@src/utils/api.utils';
+import { buildOrder } from '@src/utils/sort.utils';
 
 export class GetAllSubcategoriesHandler extends BaseHandler {
   async run() {
     const { offset, limit, pageNo } = ApiHelper.getPagination(this.args.pageNo, this.args.limit);
-    const { categoryId, isActive, search } = this.args;
+    const { categoryId, isActive, search, sortBy, sortOrder } = this.args;
 
     const where = {};
     if (categoryId) where.categoryId = categoryId;
@@ -29,7 +30,7 @@ export class GetAllSubcategoriesHandler extends BaseHandler {
       where,
       limit,
       offset,
-      order: [['id', 'DESC']],
+      order: buildOrder(db, 'Subcategory', sortBy, sortOrder),
       include: [
         {
           model: db.Category,

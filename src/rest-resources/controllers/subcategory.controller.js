@@ -1,3 +1,4 @@
+import { BulkCreateSubcategoriesHandler } from '@src/handlers/subcategories/bulkCreateSubcategories.handler';
 import { CreateSubcategoryHandler } from '@src/handlers/subcategories/createSubcategory.handler';
 import { DeleteSubcategoryHandler } from '@src/handlers/subcategories/deleteSubcategory.handler';
 import { GetSubcategoryHandler } from '@src/handlers/subcategories/getSubcategory.handler';
@@ -9,6 +10,15 @@ export default class SubcategoryController {
   static async create(req, res, next) {
     try {
       const data = await CreateSubcategoryHandler.execute(req.body, req.context);
+      ApiHelper.sendResponse({ req, res, next }, data);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async bulkCreate(req, res, next) {
+    try {
+      const data = await BulkCreateSubcategoriesHandler.execute(req.body, req.context);
       ApiHelper.sendResponse({ req, res, next }, data);
     } catch (error) {
       next(error);
