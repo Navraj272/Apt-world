@@ -2,7 +2,7 @@ import db from "@src/db/models"
 import { AppError } from "@src/errors/app.error"
 import { Errors } from "@src/errors/errorCodes"
 import { BaseHandler } from "@src/libs/baseHandler"
-import { setCache } from "@src/libs/redis"
+import { setCache } from "@src/libs/cache"
 import { CACHE_KEYS } from "@src/utils/constants/public.constants"
 
 // export class toggleStateHandler extends BaseHandler {

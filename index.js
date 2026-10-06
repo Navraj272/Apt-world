@@ -3,11 +3,8 @@ import config from './src/configs/app.config'
 import gracefulShutDown from './src/libs/gracefulShutDown'
 import { Logger } from './src/libs/logger'
 import app from './src/rest-resources'
-import socketServer from '@src/socket-resources'
 
 const httpServer = createServer(app)
-socketServer.attach(httpServer)
-
 
 httpServer.listen({ port: config.get('port') }, () => {
   Logger.info({ message: `Listening On ${config.get('port')}` }, 'Server Started')

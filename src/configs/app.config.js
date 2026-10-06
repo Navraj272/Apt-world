@@ -246,20 +246,6 @@ const config = convict({
     default: '',
     env: 'CREDENTIAL_ENCRYPTION_KEY'
   },
-  redis: {
-    host: {
-      default: 'localhost',
-      env: 'REDIS_HOST'
-    },
-    port: {
-      default: 6379,
-      env: 'REDIS_PORT'
-    },
-    password: {
-      default: '',
-      env: 'REDIS_PASSWORD'
-    }
-  },
   mailGun: {
     apiKey: {
       default: '',

@@ -3,7 +3,7 @@ import { AppError } from '@src/errors/app.error'
 import { Errors } from '@src/errors/errorCodes'
 import { uploadImages } from '@src/helpers/uploadFiles.helpers'
 import { BaseHandler } from '@src/libs/baseHandler'
-import { deleteCacheByPattern } from '@src/libs/redis'
+import { deleteCacheByPattern } from '@src/libs/cache'
 import { CACHE_KEYS, S3_FILE_PREFIX } from "@src/utils/constants/public.constants"
 
 

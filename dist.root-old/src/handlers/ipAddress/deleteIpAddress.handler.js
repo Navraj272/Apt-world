@@ -1,0 +1,37 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.DeleteIpAddressHandler = void 0;
+var _models = _interopRequireDefault(require("../../db/models"));
+var _baseHandler = require("../../libs/baseHandler");
+var _redis = require("../../libs/redis");
+var _public = require("../../utils/constants/public.constants");
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
+class DeleteIpAddressHandler extends _baseHandler.BaseHandler {
+  get constraints() {
+    return constraints;
+  }
+  async run() {
+    const {
+      ipAddressId
+    } = this.args;
+    const transaction = this.dbTransaction;
+    const deleted = await _models.default.WhitelistedIpAddress.destroy({
+      where: {
+        id: ipAddressId
+      },
+      transaction
+    });
+    if (deleted === 0) {
+      throw new Error('IP address not found');
+    }
+    await (0, _redis.deleteCache)(_public.CACHE_KEYS.IP_ADDRESSES);
+    return {
+      message: 'IP address deleted successfully'
+    };
+  }
+}
+exports.DeleteIpAddressHandler = DeleteIpAddressHandler;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJfbW9kZWxzIiwiX2ludGVyb3BSZXF1aXJlRGVmYXVsdCIsInJlcXVpcmUiLCJfYmFzZUhhbmRsZXIiLCJfcmVkaXMiLCJfcHVibGljIiwiZSIsIl9fZXNNb2R1bGUiLCJkZWZhdWx0IiwiRGVsZXRlSXBBZGRyZXNzSGFuZGxlciIsIkJhc2VIYW5kbGVyIiwiY29uc3RyYWludHMiLCJydW4iLCJpcEFkZHJlc3NJZCIsImFyZ3MiLCJ0cmFuc2FjdGlvbiIsImRiVHJhbnNhY3Rpb24iLCJkZWxldGVkIiwiZGIiLCJXaGl0ZWxpc3RlZElwQWRkcmVzcyIsImRlc3Ryb3kiLCJ3aGVyZSIsImlkIiwiRXJyb3IiLCJkZWxldGVDYWNoZSIsIkNBQ0hFX0tFWVMiLCJJUF9BRERSRVNTRVMiLCJtZXNzYWdlIiwiZXhwb3J0cyJdLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uL3NyYy9oYW5kbGVycy9pcEFkZHJlc3MvZGVsZXRlSXBBZGRyZXNzLmhhbmRsZXIuanMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IGRiIGZyb20gJ0BzcmMvZGIvbW9kZWxzJ1xuaW1wb3J0IHsgQmFzZUhhbmRsZXIgfSBmcm9tICdAc3JjL2xpYnMvYmFzZUhhbmRsZXInXG5pbXBvcnQgeyBkZWxldGVDYWNoZSB9IGZyb20gJ0BzcmMvbGlicy9yZWRpcydcbmltcG9ydCB7IENBQ0hFX0tFWVMgfSBmcm9tICdAc3JjL3V0aWxzL2NvbnN0YW50cy9wdWJsaWMuY29uc3RhbnRzJ1xuXG5leHBvcnQgY2xhc3MgRGVsZXRlSXBBZGRyZXNzSGFuZGxlciBleHRlbmRzIEJhc2VIYW5kbGVyIHtcbiAgZ2V0IGNvbnN0cmFpbnRzKCkge1xuICAgIHJldHVybiBjb25zdHJhaW50c1xuICB9XG5cbiAgYXN5bmMgcnVuKCkge1xuICAgIGNvbnN0IHsgaXBBZGRyZXNzSWQgfSA9IHRoaXMuYXJnc1xuICAgIGNvbnN0IHRyYW5zYWN0aW9uID0gdGhpcy5kYlRyYW5zYWN0aW9uXG5cbiAgICBjb25zdCBkZWxldGVkID0gYXdhaXQgZGIuV2hpdGVsaXN0ZWRJcEFkZHJlc3MuZGVzdHJveSh7XG4gICAgICB3aGVyZTogeyBpZCA6IGlwQWRkcmVzc0lkIH0sXG4gICAgICB0cmFuc2FjdGlvblxuICAgIH0pXG5cbiAgICBpZiAoZGVsZXRlZCA9PT0gMCkge1xuICAgICAgdGhyb3cgbmV3IEVycm9yKCdJUCBhZGRyZXNzIG5vdCBmb3VuZCcpXG4gICAgfVxuXG4gICAgYXdhaXQgZGVsZXRlQ2FjaGUoQ0FDSEVfS0VZUy5JUF9BRERSRVNTRVMpO1xuXG4gICAgcmV0dXJuIHsgbWVzc2FnZTogJ0lQIGFkZHJlc3MgZGVsZXRlZCBzdWNjZXNzZnVsbHknIH1cbiAgfVxufVxuIl0sIm1hcHBpbmdzIjoiOzs7Ozs7QUFBQSxJQUFBQSxPQUFBLEdBQUFDLHNCQUFBLENBQUFDLE9BQUE7QUFDQSxJQUFBQyxZQUFBLEdBQUFELE9BQUE7QUFDQSxJQUFBRSxNQUFBLEdBQUFGLE9BQUE7QUFDQSxJQUFBRyxPQUFBLEdBQUFILE9BQUE7QUFBa0UsU0FBQUQsdUJBQUFLLENBQUEsV0FBQUEsQ0FBQSxJQUFBQSxDQUFBLENBQUFDLFVBQUEsR0FBQUQsQ0FBQSxLQUFBRSxPQUFBLEVBQUFGLENBQUE7QUFFM0QsTUFBTUcsc0JBQXNCLFNBQVNDLHdCQUFXLENBQUM7RUFDdEQsSUFBSUMsV0FBV0EsQ0FBQSxFQUFHO0lBQ2hCLE9BQU9BLFdBQVc7RUFDcEI7RUFFQSxNQUFNQyxHQUFHQSxDQUFBLEVBQUc7SUFDVixNQUFNO01BQUVDO0lBQVksQ0FBQyxHQUFHLElBQUksQ0FBQ0MsSUFBSTtJQUNqQyxNQUFNQyxXQUFXLEdBQUcsSUFBSSxDQUFDQyxhQUFhO0lBRXRDLE1BQU1DLE9BQU8sR0FBRyxNQUFNQyxlQUFFLENBQUNDLG9CQUFvQixDQUFDQyxPQUFPLENBQUM7TUFDcERDLEtBQUssRUFBRTtRQUFFQyxFQUFFLEVBQUdUO01BQVksQ0FBQztNQUMzQkU7SUFDRixDQUFDLENBQUM7SUFFRixJQUFJRSxPQUFPLEtBQUssQ0FBQyxFQUFFO01BQ2pCLE1BQU0sSUFBSU0sS0FBSyxDQUFDLHNCQUFzQixDQUFDO0lBQ3pDO0lBRUEsTUFBTSxJQUFBQyxrQkFBVyxFQUFDQyxrQkFBVSxDQUFDQyxZQUFZLENBQUM7SUFFMUMsT0FBTztNQUFFQyxPQUFPLEVBQUU7SUFBa0MsQ0FBQztFQUN2RDtBQUNGO0FBQUNDLE9BQUEsQ0FBQW5CLHNCQUFBLEdBQUFBLHNCQUFBIiwiaWdub3JlTGlzdCI6W119

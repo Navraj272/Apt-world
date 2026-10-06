@@ -1,0 +1,43 @@
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.UpdateAdminRoleHandler = void 0;
+var _models = _interopRequireDefault(require("../../db/models"));
+var _app = require("../../errors/app.error");
+var _errorCodes = require("../../errors/errorCodes");
+var _baseHandler = require("../../libs/baseHandler");
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
+;
+class UpdateAdminRoleHandler extends _baseHandler.BaseHandler {
+  async run() {
+    const {
+      roleId,
+      name,
+      permission,
+      level
+    } = this.args;
+    const transaction = this.context.sequelizeTransaction;
+    const adminRole = await _models.default.AdminRole.findOne({
+      where: {
+        roleId
+      },
+      transaction
+    });
+    if (!adminRole) {
+      throw new _app.AppError(_errorCodes.Errors.ADMIN_ROLE_NOT_FOUND);
+    }
+    adminRole.name = name;
+    adminRole.permission = permission;
+    adminRole.level = level;
+    await adminRole.save({
+      transaction
+    });
+    return {
+      success: true
+    };
+  }
+}
+exports.UpdateAdminRoleHandler = UpdateAdminRoleHandler;
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJfbW9kZWxzIiwiX2ludGVyb3BSZXF1aXJlRGVmYXVsdCIsInJlcXVpcmUiLCJfYXBwIiwiX2Vycm9yQ29kZXMiLCJfYmFzZUhhbmRsZXIiLCJlIiwiX19lc01vZHVsZSIsImRlZmF1bHQiLCJVcGRhdGVBZG1pblJvbGVIYW5kbGVyIiwiQmFzZUhhbmRsZXIiLCJydW4iLCJyb2xlSWQiLCJuYW1lIiwicGVybWlzc2lvbiIsImxldmVsIiwiYXJncyIsInRyYW5zYWN0aW9uIiwiY29udGV4dCIsInNlcXVlbGl6ZVRyYW5zYWN0aW9uIiwiYWRtaW5Sb2xlIiwiZGIiLCJBZG1pblJvbGUiLCJmaW5kT25lIiwid2hlcmUiLCJBcHBFcnJvciIsIkVycm9ycyIsIkFETUlOX1JPTEVfTk9UX0ZPVU5EIiwic2F2ZSIsInN1Y2Nlc3MiLCJleHBvcnRzIl0sInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vc3JjL2hhbmRsZXJzL2FkbWluUm9sZXMvdXBkYXRlQWRtaW5Sb2xlLmhhbmRsZXIuanMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IGRiIGZyb20gJ0BzcmMvZGIvbW9kZWxzJztcbmltcG9ydCB7IEFwcEVycm9yIH0gZnJvbSAnQHNyYy9lcnJvcnMvYXBwLmVycm9yJztcbmltcG9ydCB7IEVycm9ycyB9IGZyb20gJ0BzcmMvZXJyb3JzL2Vycm9yQ29kZXMnO1xuaW1wb3J0IHsgQmFzZUhhbmRsZXIgfSBmcm9tICdAc3JjL2xpYnMvYmFzZUhhbmRsZXInO1xuO1xuXG5cbmV4cG9ydCBjbGFzcyBVcGRhdGVBZG1pblJvbGVIYW5kbGVyIGV4dGVuZHMgQmFzZUhhbmRsZXIge1xuICBhc3luYyBydW4oKSB7XG4gICAgY29uc3QgeyByb2xlSWQsIG5hbWUsIHBlcm1pc3Npb24sIGxldmVsIH0gPSB0aGlzLmFyZ3M7XG4gICAgY29uc3QgdHJhbnNhY3Rpb24gPSB0aGlzLmNvbnRleHQuc2VxdWVsaXplVHJhbnNhY3Rpb247XG4gICAgY29uc3QgYWRtaW5Sb2xlID0gYXdhaXQgZGIuQWRtaW5Sb2xlLmZpbmRPbmUoeyB3aGVyZTogeyByb2xlSWQgfSwgdHJhbnNhY3Rpb24gfSk7XG5cblxuICAgIGlmICghYWRtaW5Sb2xlKSB7XG4gICAgICB0aHJvdyBuZXcgQXBwRXJyb3IoRXJyb3JzLkFETUlOX1JPTEVfTk9UX0ZPVU5EKTtcbiAgICB9XG4gICAgYWRtaW5Sb2xlLm5hbWUgPSBuYW1lO1xuICAgIGFkbWluUm9sZS5wZXJtaXNzaW9uID0gcGVybWlzc2lvbjtcbiAgICBhZG1pblJvbGUubGV2ZWwgPSBsZXZlbDtcblxuICAgIGF3YWl0IGFkbWluUm9sZS5zYXZlKHsgdHJhbnNhY3Rpb24gfSk7XG5cblxuICAgIHJldHVybiB7IHN1Y2Nlc3M6IHRydWUgfVxuICB9XG59XG4iXSwibWFwcGluZ3MiOiI7Ozs7OztBQUFBLElBQUFBLE9BQUEsR0FBQUMsc0JBQUEsQ0FBQUMsT0FBQTtBQUNBLElBQUFDLElBQUEsR0FBQUQsT0FBQTtBQUNBLElBQUFFLFdBQUEsR0FBQUYsT0FBQTtBQUNBLElBQUFHLFlBQUEsR0FBQUgsT0FBQTtBQUFvRCxTQUFBRCx1QkFBQUssQ0FBQSxXQUFBQSxDQUFBLElBQUFBLENBQUEsQ0FBQUMsVUFBQSxHQUFBRCxDQUFBLEtBQUFFLE9BQUEsRUFBQUYsQ0FBQTtBQUNwRDtBQUdPLE1BQU1HLHNCQUFzQixTQUFTQyx3QkFBVyxDQUFDO0VBQ3RELE1BQU1DLEdBQUdBLENBQUEsRUFBRztJQUNWLE1BQU07TUFBRUMsTUFBTTtNQUFFQyxJQUFJO01BQUVDLFVBQVU7TUFBRUM7SUFBTSxDQUFDLEdBQUcsSUFBSSxDQUFDQyxJQUFJO0lBQ3JELE1BQU1DLFdBQVcsR0FBRyxJQUFJLENBQUNDLE9BQU8sQ0FBQ0Msb0JBQW9CO0lBQ3JELE1BQU1DLFNBQVMsR0FBRyxNQUFNQyxlQUFFLENBQUNDLFNBQVMsQ0FBQ0MsT0FBTyxDQUFDO01BQUVDLEtBQUssRUFBRTtRQUFFWjtNQUFPLENBQUM7TUFBRUs7SUFBWSxDQUFDLENBQUM7SUFHaEYsSUFBSSxDQUFDRyxTQUFTLEVBQUU7TUFDZCxNQUFNLElBQUlLLGFBQVEsQ0FBQ0Msa0JBQU0sQ0FBQ0Msb0JBQW9CLENBQUM7SUFDakQ7SUFDQVAsU0FBUyxDQUFDUCxJQUFJLEdBQUdBLElBQUk7SUFDckJPLFNBQVMsQ0FBQ04sVUFBVSxHQUFHQSxVQUFVO0lBQ2pDTSxTQUFTLENBQUNMLEtBQUssR0FBR0EsS0FBSztJQUV2QixNQUFNSyxTQUFTLENBQUNRLElBQUksQ0FBQztNQUFFWDtJQUFZLENBQUMsQ0FBQztJQUdyQyxPQUFPO01BQUVZLE9BQU8sRUFBRTtJQUFLLENBQUM7RUFDMUI7QUFDRjtBQUFDQyxPQUFBLENBQUFyQixzQkFBQSxHQUFBQSxzQkFBQSIsImlnbm9yZUxpc3QiOltdfQ==

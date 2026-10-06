@@ -2,7 +2,7 @@ import db from '@src/db/models'
 import { BaseHandler } from '@src/libs/baseHandler'
 import { CUSTOMER_IO_CONSTANTS } from '@src/utils/constants/public.constants'
 import { trackEvent, identifyUser } from '@src/libs/customerio'
-import { client } from "@src/libs/redis"
+import { client } from "@src/libs/cache"
 import { ALEA_SESSION_PREFIX } from '@src/utils/constants/public.constants'
 
 

@@ -29,7 +29,9 @@ const dbSettings = {
   },
   dialect: 'postgres',
   dialectOptions: {
-    application_name: config.get('app.name')
+    application_name: config.get('app.name'),
+    // Managed Postgres (Neon, Render, etc.) requires SSL; set DB_SSL=true there
+    ...(process.env.DB_SSL === 'true' && { ssl: { require: true, rejectUnauthorized: false } })
   },
   migrationStorage: 'sequelize',
   migrationStorageTableName: 'sequelize_migration_meta',

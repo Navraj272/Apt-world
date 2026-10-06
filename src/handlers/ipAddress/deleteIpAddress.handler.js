@@ -1,6 +1,6 @@
 import db from '@src/db/models'
 import { BaseHandler } from '@src/libs/baseHandler'
-import { deleteCache } from '@src/libs/redis'
+import { deleteCache } from '@src/libs/cache'
 import { CACHE_KEYS } from '@src/utils/constants/public.constants'
 
 export class DeleteIpAddressHandler extends BaseHandler {

@@ -4,7 +4,7 @@ import { AppError } from '@src/errors/app.error'
 import { Errors } from '@src/errors/errorCodes'
 import { encryptPassword } from '@src/helpers/authentication.helpers'
 import { BaseHandler } from '@src/libs/baseHandler'
-import { deleteCache } from '@src/libs/redis'
+import { deleteCache } from '@src/libs/cache'
 import { ROLE_DETAILS } from '@src/utils/constants/public.constants'
 import Jwt from 'jsonwebtoken'
 

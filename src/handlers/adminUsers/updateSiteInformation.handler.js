@@ -2,7 +2,7 @@ import db from '@src/db/models'
 import { Errors } from "@src/errors/errorCodes"
 import { uploadImages } from '@src/helpers/uploadFiles.helpers'
 import { BaseHandler } from '@src/libs/baseHandler'
-import { deleteCache } from '@src/libs/redis'
+import { deleteCache } from '@src/libs/cache'
 import { CACHE_KEYS, GLOBAL_SETTINGS, S3_FILE_PREFIX } from '@src/utils/constants/public.constants'
 
 

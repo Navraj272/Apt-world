@@ -3,7 +3,7 @@ import { AppError } from '@src/errors/app.error'
 import { Errors } from '@src/errors/errorCodes'
 import { BaseHandler } from '@src/libs/baseHandler'
 import { CACHE_KEYS ,GLOBAL_SETTINGS } from '@src/utils/constants/public.constants'
-import { deleteCache } from '@src/libs/redis'
+import { deleteCache } from '@src/libs/cache'
 
 export class UpdateMethodBasedWithdrawalLimitsHandler extends BaseHandler {
   async run() {

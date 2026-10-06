@@ -1,6 +1,6 @@
 import db from "@src/db/models";
 import { BaseHandler } from "@src/libs/baseHandler";
-import { getCache } from "@src/libs/redis";
+import { getCache } from "@src/libs/cache";
 import { CACHE_KEYS } from "@src/utils/constants/public.constants";
 
 export class DemographicUserHandler extends BaseHandler {
