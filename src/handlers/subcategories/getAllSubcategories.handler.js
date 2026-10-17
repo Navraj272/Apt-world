@@ -30,7 +30,10 @@ export class GetAllSubcategoriesHandler extends BaseHandler {
       where,
       limit,
       offset,
-      order: buildOrder(db, 'Subcategory', sortBy, sortOrder),
+      // Default (public) order: category order, then the admin-set order inside each category
+      order: sortBy
+        ? buildOrder(db, 'Subcategory', sortBy, sortOrder)
+        : [[{ model: db.Category, as: 'category' }, 'sortOrder', 'ASC'], ['sortOrder', 'ASC'], ['id', 'ASC']],
       include: [
         {
           model: db.Category,

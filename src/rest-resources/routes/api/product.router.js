@@ -12,6 +12,8 @@ productRouter
 
 productRouter.post('/bulk', contextMiddleware(true), ProductController.bulkCreate);
 
+productRouter.put('/reorder', contextMiddleware(true), ProductController.reorder);
+
 productRouter
   .route('/:id')
   .get(contextMiddleware(false), ProductController.getOne)

@@ -37,8 +37,21 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: true,
     },
+    sortOrder: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
   }, {
     sequelize,
+    hooks: {
+      // New rows go to the end of their list unless an explicit order is given
+      beforeCreate: async (instance) => {
+        if (instance.sortOrder) return;
+        const max = await sequelize.models.Category.max('sortOrder', {});
+        instance.sortOrder = (max || 0) + 1;
+      },
+    },
     tableName: 'categories',
     schema: 'public',
     timestamps: true,

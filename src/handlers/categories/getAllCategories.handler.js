@@ -16,7 +16,7 @@ export class GetAllCategoriesHandler extends BaseHandler {
       where,
       limit,
       offset,
-      order: [['id', 'DESC']],
+      order: [['sortOrder', 'ASC'], ['id', 'ASC']],
     });
 
     return {

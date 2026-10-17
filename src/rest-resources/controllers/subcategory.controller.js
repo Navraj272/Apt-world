@@ -1,3 +1,4 @@
+import { ReorderSubcategoriesHandler } from '@src/handlers/reorderItems.handler';
 import { BulkCreateSubcategoriesHandler } from '@src/handlers/subcategories/bulkCreateSubcategories.handler';
 import { CreateSubcategoryHandler } from '@src/handlers/subcategories/createSubcategory.handler';
 import { DeleteSubcategoryHandler } from '@src/handlers/subcategories/deleteSubcategory.handler';
@@ -7,6 +8,15 @@ import { UpdateSubcategoryHandler } from '@src/handlers/subcategories/updateSubc
 import { ApiHelper } from '@src/utils/api.utils';
 
 export default class SubcategoryController {
+  static async reorder(req, res, next) {
+    try {
+      const data = await ReorderSubcategoriesHandler.execute(req.body, req.context);
+      ApiHelper.sendResponse({ req, res, next }, data);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async create(req, res, next) {
     try {
       const data = await CreateSubcategoryHandler.execute(req.body, req.context);

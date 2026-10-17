@@ -30,7 +30,18 @@ export class GetAllProductsHandler extends BaseHandler {
       ];
     }
 
-    const order = buildOrder(db, 'Product', sortBy, sortOrder);
+    // Default (public) order: category order, then subcategory order, then the admin-set product order
+    // Inside a category or subcategory only the product order applies
+    const order = sortBy
+      ? buildOrder(db, 'Product', sortBy, sortOrder)
+      : (categoryId || subcategoryId)
+        ? [['sortOrder', 'ASC'], ['id', 'ASC']]
+        : [
+        [{ model: db.Category, as: 'category' }, 'sortOrder', 'ASC'],
+        [{ model: db.Subcategory, as: 'subcategory' }, 'sortOrder', 'ASC'],
+        ['sortOrder', 'ASC'],
+        ['id', 'ASC'],
+      ];
     // Admin-picked favourites are listed first on the public "All products" view
     if (isCurated || favouriteFirst === 'true' || favouriteFirst === true) order.unshift(['isFavourite', 'DESC']);
 

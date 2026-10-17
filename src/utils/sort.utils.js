@@ -10,6 +10,8 @@ export const buildOrder = (db, alias, sortBy, sortOrder) => {
       return [['slug', direction], ['id', 'DESC']];
     case 'createdAt':
       return [['createdAt', direction], ['id', 'DESC']];
+    case 'sortOrder':
+      return [['sortOrder', direction], ['id', 'DESC']];
     case 'id':
       return [['id', direction]];
     default:

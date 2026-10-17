@@ -9,6 +9,8 @@ categoryRouter
   .get(contextMiddleware(false), CategoryController.getAll)
   .post(contextMiddleware(true), CategoryController.create);
 
+categoryRouter.put('/reorder', contextMiddleware(true), CategoryController.reorder);
+
 categoryRouter
   .route('/:id')
   .get(contextMiddleware(false), CategoryController.getOne)

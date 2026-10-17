@@ -1,3 +1,4 @@
+import { ReorderCategoriesHandler } from '@src/handlers/reorderItems.handler';
 import { CreateCategoryHandler } from '@src/handlers/categories/createCategory.handler';
 import { DeleteCategoryHandler } from '@src/handlers/categories/deleteCategory.handler';
 import { GetCategoryHandler } from '@src/handlers/categories/getCategory.handler';
@@ -6,6 +7,15 @@ import { UpdateCategoryHandler } from '@src/handlers/categories/updateCategory.h
 import { ApiHelper } from '@src/utils/api.utils';
 
 export default class CategoryController {
+  static async reorder(req, res, next) {
+    try {
+      const data = await ReorderCategoriesHandler.execute(req.body, req.context);
+      ApiHelper.sendResponse({ req, res, next }, data);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async create(req, res, next) {
     try {
       const data = await CreateCategoryHandler.execute(req.body, req.context);

@@ -1,3 +1,4 @@
+import { ReorderProductsHandler } from '@src/handlers/reorderItems.handler';
 import { BulkCreateProductsHandler } from '@src/handlers/products/bulkCreateProducts.handler';
 import { CreateProductHandler } from '@src/handlers/products/createProduct.handler';
 import { DeleteProductHandler } from '@src/handlers/products/deleteProduct.handler';
@@ -7,6 +8,15 @@ import { UpdateProductHandler } from '@src/handlers/products/updateProduct.handl
 import { ApiHelper } from '@src/utils/api.utils';
 
 export default class ProductController {
+  static async reorder(req, res, next) {
+    try {
+      const data = await ReorderProductsHandler.execute(req.body, req.context);
+      ApiHelper.sendResponse({ req, res, next }, data);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async create(req, res, next) {
     try {
       // Merge body and files into the handler args
