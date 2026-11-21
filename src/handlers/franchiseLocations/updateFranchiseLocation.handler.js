@@ -6,7 +6,7 @@ import { INDIAN_STATES } from '@src/utils/constants/indianStates.constants';
 
 export class UpdateFranchiseLocationHandler extends BaseHandler {
   async run() {
-    const { id, state, city, address, contactName, email, phone, isActive } = this.args;
+    const { id, state, city, address, contactName, email, phone, mapUrl, isActive } = this.args;
 
     const franchiseLocation = await db.FranchiseLocation.findByPk(id);
     if (!franchiseLocation) {
@@ -24,6 +24,7 @@ export class UpdateFranchiseLocationHandler extends BaseHandler {
     if (contactName !== undefined) updateData.contactName = contactName;
     if (email) updateData.email = email;
     if (phone) updateData.phone = phone;
+    if (mapUrl !== undefined) updateData.mapUrl = mapUrl || null;
     if (isActive !== undefined) updateData.isActive = isActive === 'false' || isActive === false ? false : true;
 
     await franchiseLocation.update(updateData);

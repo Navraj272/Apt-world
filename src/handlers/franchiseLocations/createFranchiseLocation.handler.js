@@ -6,7 +6,7 @@ import { INDIAN_STATES } from '@src/utils/constants/indianStates.constants';
 
 export class CreateFranchiseLocationHandler extends BaseHandler {
   async run() {
-    const { state, city, address, contactName, email, phone } = this.args;
+    const { state, city, address, contactName, email, phone, mapUrl } = this.args;
 
     if (!state || !city || !address || !email || !phone) {
       throw new AppError(Errors.MISSING_REQUIRED_PARAMETER);
@@ -23,6 +23,7 @@ export class CreateFranchiseLocationHandler extends BaseHandler {
       contactName,
       email,
       phone,
+      mapUrl: mapUrl || null,
       isActive: true,
     });
 
